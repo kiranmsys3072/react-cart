@@ -2,9 +2,6 @@ import React from "react";
 
 class Cartitem extends React.Component{
    
-   
-
-  
     // increaseQuantity=()=>{
     //    // this.state.qty+=1;
     //    // console.log(this,this.state)

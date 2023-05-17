@@ -63,7 +63,7 @@ const Cartitem=(props)=>{
         return(
             <div className="cart-item">
                 <div className="left-block">
-                <img  style={styles.image}/>
+                <img src={product.img} style={styles.image}/>
                 </div>
                 <div  className="right-block">
                     <div style={{color:'red'}}>{title}</div>
@@ -72,7 +72,7 @@ const Cartitem=(props)=>{
 
                 </div>
                 <div className="cart-item-actions">
-                  <img className="action-icons" alt=' ' onClick={()=>{increaseQuantity(product)}} src="https://cdn-icons-png.flaticon.com/128/992/992651.png"/>
+                  <img  className="action-icons" alt=' ' onClick={()=>{increaseQuantity(product)}} src="https://cdn-icons-png.flaticon.com/128/992/992651.png"/>
                   <img className="action-icons" alt=' ' onClick={()=> {decreaseQuantity(product)}} src="https://cdn-icons-png.flaticon.com/128/992/992683.png"/>
                   <img className="action-icons" alt=' ' onClick={()=>{deleteQuantity(product.id)}} src="https://cdn-icons-png.flaticon.com/128/1214/1214428.png"/>
                 </div>

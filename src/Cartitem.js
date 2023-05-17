@@ -1,6 +1,6 @@
 import React from "react";
 
-class Cartitem extends React.Component{
+const Cartitem=(props)=>{
    
     // increaseQuantity=()=>{
     //    // this.state.qty+=1;
@@ -58,10 +58,8 @@ class Cartitem extends React.Component{
       
     // }
   
-
-    render(){
-        const {title,price,qty}=this.props.product
-       const {product,increaseQuantity,decreaseQuantity, deleteQuantity}=this.props
+        const {title,price,qty}=props.product
+       const {product,increaseQuantity,decreaseQuantity, deleteQuantity}=props
         return(
             <div className="cart-item">
                 <div className="left-block">
@@ -82,7 +80,7 @@ class Cartitem extends React.Component{
             </div>
         )
     }
-}
+
 
 const styles={
     image:{

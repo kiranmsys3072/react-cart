@@ -2,46 +2,114 @@ import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
 import './App.css';
+// import * as firebase from 'firebase'
+import  db from './firebase'
+import { collection, onSnapshot } from 'firebase/firestore';
+
+
+//extra
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 class App extends React.Component {
   constructor(){
     super()
     this.state={
         products:[
-            {
-                title:"TV",
-                price:7999,
-                qty:2,
-                id:1,
-                img:"https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dHZ8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                title:"mobile",
-                price:9999,
-                qty:1,
-                id:2,
-                img:"https://images.unsplash.com/photo-1567581935884-3349723552ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bW9iaWxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                title:"watch",
-                price:4599,
-                qty:3,
-                id:3,
-                img:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-            },
-            {
-                title:"powerbank",
-                price:1999,
-                qty:5,
-                id:4,
-                img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-            }
-        ]
+            // {
+            //     title:"TV",
+            //     price:7999,
+            //     qty:2,
+            //     id:1,
+            //     img:"https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dHZ8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+            // },
+            // {
+            //     title:"mobile",
+            //     price:9999,
+            //     qty:1,
+            //     id:2,
+            //     img:"https://images.unsplash.com/photo-1567581935884-3349723552ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bW9iaWxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+            // },
+            // {
+            //     title:"watch",
+            //     price:4599,
+            //     qty:3,
+            //     id:3,
+            //     img:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+            // },
+            // {
+            //     title:"powerbank",
+            //     price:1999,
+            //     qty:5,
+            //     id:4,
+            //     img:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+            // }
+        ],
+        loading:true
     }
 
    
    
 }
+
+componentDidMount(){
+  // firebase.firestore()
+  // .collection('product')
+  // .get().then((snapshot)=>{
+  //   console.log(snapshot)
+
+  //   snapshot.docs.map((doc)=>{
+  //     console.log(doc.data())
+
+  //     const products=snapshot.docs.map((doc)=>{
+  //       const data=doc.data()
+  //       data['id']=doc.id
+  //       return data
+  //     })
+  //     this.setState({products,loading:false})
+  //   })
+
+  // })
+ 
+
+  firebase.firestore()
+  .collection('product')
+  .onSnapshot((snapshot)=>{
+    console.log(snapshot)
+
+    snapshot.docs.map((doc)=>{
+      console.log(doc.data())
+
+      const products=snapshot.docs.map((doc)=>{
+        const data=doc.data()
+        data['id']=doc.id
+        return data
+      })
+      this.setState({products,loading:false})
+    })
+
+  })
+}
+
+// componentDidMount(){
+//   onSnapshot(collection(db,'product'),(snapshot)=>{
+//     console.log(snapshot.docs.map((doc)=> doc.data()))
+//   })
+// }
+
+// componentDidMount(){
+//   firebase
+//   .firestore()
+//   .collection('products')
+//   .get()
+//   .then((snapshot)=>{
+//     console.log(snapshot)
+//   })
+// }
+
+
+
 increaseQuantity=(product)=>{
     const {products}=this.state
     console.log("increase by 1",product)
@@ -94,7 +162,9 @@ return price
 
 
   render(){
-    const {products}=this.state
+    //const ref=firebase.firestore().collection('products')
+    //console.log(ref)
+    const {products,loading}=this.state
     return (
       <div className="App">
         <Navbar count={this.totalCount()}/>
@@ -103,6 +173,7 @@ return price
                                decreaseQuantity={this.decreaseQuantity}
                                deleteQuantity={this. deleteQuantity}
                                products={products}   />
+                               {loading && <h1>loading...</h1>}
 
                                <div >Total Price : <span style={{color:"red",paddingRight:30}}>{this.totalPrice()}</span></div>
       </div>
